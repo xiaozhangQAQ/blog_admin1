@@ -38,7 +38,7 @@ export default [
         if (importance && item.importance !== +importance) return false
         if (type && item.type !== type) return false
         if (title && item.title.indexOf(title) < 0) return false
-        return true
+        return true;
       })
 
       if (sort === '-id') {
@@ -46,7 +46,7 @@ export default [
       }
 
       const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
-
+   
       return {
         code: 20000,
         data: {
