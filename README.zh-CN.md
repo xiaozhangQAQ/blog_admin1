@@ -77,6 +77,8 @@
 
 **如有问题请先看上述使用文档和文章，若不能满足，欢迎 issue 和 pr**
 
+[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/PanJiaChen/vue-element-admin/tree/CodeSandbox)
+
  <p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
@@ -220,6 +222,10 @@ Detailed changes for each release are documented in the [release notes](https://
 [Paypal Me](https://www.paypal.me/panfree23)
 
 [Buy me a coffee](https://www.buymeacoffee.com/Pan)
+
+## 购买贴纸
+
+你也可以通过 购买[官方授权的贴纸](https://smallsticker.com/product/vue-element-admin) 的方式来支持 vue-element-admin - 每售出一张贴纸，本项目将获得 2 元的捐赠。
 
 ## Browsers support
 
