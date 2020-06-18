@@ -1,31 +1,36 @@
 <template>
   <div class="dashboard-container">
-    <component :is="currentRole" />
+    <!-- <div class="dashboard-text">name: {{ name }}</div> -->
+    <!-- @handleSetLineChartData="handleSetLineChartData" -->
+    <panel-group />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import adminDashboard from './admin'
-import editorDashboard from './editor'
+// import { mapGetters } from 'vuex'
+import PanelGroup from './components/PanelGroup'
 
 export default {
   name: 'Dashboard',
-  components: { adminDashboard, editorDashboard },
-  data() {
-    return {
-      currentRole: 'adminDashboard'
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'roles'
-    ])
-  },
-  created() {
-    if (!this.roles.includes('admin')) {
-      this.currentRole = 'editorDashboard'
-    }
+  components: {
+    PanelGroup
   }
+  // computed: {
+  //   ...mapGetters([
+  //     'name'
+  //   ])
+  // }
 }
 </script>
+
+<style lang="scss" scoped>
+.dashboard {
+  &-container {
+    margin: 30px;
+  }
+  &-text {
+    font-size: 30px;
+    line-height: 46px;
+  }
+}
+</style>
