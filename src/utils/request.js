@@ -53,13 +53,12 @@ const https = (url, method = 'POST', data = {}) => {
             type: 'error',
             duration: 2 * 1000
           })
-
           // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
           if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
             // to re-login
-            MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-              confirmButtonText: 'Re-Login',
-              cancelButtonText: 'Cancel',
+            MessageBox.confirm('当前登录过期，请重新登录!!!', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
               store.dispatch('user/resetToken').then(() => {
@@ -90,7 +89,7 @@ const https = (url, method = 'POST', data = {}) => {
         return reject(error)
       }
     )
-    console.log(data)
+    
     if (method == 'POST') {
       service({
         url,

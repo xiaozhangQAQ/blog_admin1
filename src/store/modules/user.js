@@ -43,7 +43,6 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       const data = JSON.parse(localStorage.getItem('userInfo'))
-      console.log(data)
       commit('SET_ROLES', data.roles)
       commit('SET_USERINFO', data)
       resetRouter()
@@ -56,6 +55,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
+      commit('SET_USERINFO', {})
+      localStorage.removeItem('userInfo')
       removeToken()
       resolve()
     })
@@ -66,6 +67,8 @@ const actions = {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
+      commit('SET_USERINFO', {})
+      localStorage.removeItem('userInfo')
       removeToken()
       resolve()
     })

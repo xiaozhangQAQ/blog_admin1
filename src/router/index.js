@@ -12,6 +12,11 @@ import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
 
+import {sysMenu} from '@/api/user'
+import {authRoute} from '@/utils/authRoute'
+
+// const ArtWrite = ()=> import('@/views/art/artWrite/index');
+
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -82,122 +87,216 @@ export const constantRoutes = [ // 公共模块
         meta: { title: '总览', icon: 'dashboard', affix: true }
       }
     ]
-  },
-  {
-    path: '/art',
-    component: Layout,
-    redirect: '/art/write',
-    name: 'Art',
-    meta: { title: '文章', icon: 'example' },
-    children: [
-      {
-        path: 'write',
-        name: 'ArtWrite',
-        component: () => import('@/views/art/artWrite/index'),
-        meta: { title: '写文章', icon: 'table' }
-      },
-      {
-        path: 'manage',
-        name: 'ArtManage',
-        component: () => import('@/views/art/artManage/index'),
-        meta: { title: '文章管理', icon: 'tree' }
-      }
-    ]
-  },
-  {
-    path: '/categories',
-    component: Layout,
-    redirect: '/categories/classify',
-    name: 'Categories',
-    meta: { title: '分类/标签', icon: 'example' },
-    children: [
-      {
-        path: 'classify',
-        name: 'Classify',
-        component: () => import('@/views/categories/classify/index'),
-        meta: { title: '分类', icon: 'table' }
-      },
-      {
-        path: 'tag',
-        name: 'Tag',
-        component: () => import('@/views/categories/tag/index'),
-        meta: { title: '标签', icon: 'tree' }
-      }
-    ]
-  },
-  {
-    path: '/webset',
-    component: Layout,
-    children: [
-      {
-        path: 'webset',
-        name: 'Webset',
-        component: () => import('@/views/webset/index'),
-        meta: { title: '网站设置', icon: 'form' }
-      }
-    ]
   }
-  // {
-  //   path: '/documentation',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/documentation/index'),
-  //       name: 'Documentation',
-  //       meta: { title: 'Documentation', icon: 'documentation', affix: true }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/guide',
-  //   component: Layout,
-  //   redirect: '/guide/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/guide/index'),
-  //       name: 'Guide',
-  //       meta: { title: 'Guide', icon: 'guide', noCache: true }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/profile',
-  //   component: Layout,
-  //   redirect: '/profile/index',
-  //   hidden: true,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/profile/index'),
-  //       name: 'Profile',
-  //       meta: { title: 'Profile', icon: 'user', noCache: true }
-  //     }
-  //   ]
-  // }
+  
 ]
 
 /**
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes = [ // 私有模块
+// const indexRouter = {
+//   ArtWrite:()=> import('@/views/art/artWrite/index'),
+//   ArtManage:()=> import('@/views/art/artManage/index'),
+//   Classify:() => import('@/views/categories/classify/index'),
+//   Tag:() => import('@/views/categories/tag/index')
+// }
+// console.log(indexRouter.ArtWrite)
+// function checkRouter(vals){
+//   let val=null;
+//   for(let key in indexRouter){
+//     if(key == vals){
+//       val = indexRouter[key];
+//     }
+//   }
+
+//   return val;
+// }
+// checkRouter();
+
+// let jsons = {"data":[
+//   {id:1,parentId:0,name:'Art',path:'Art',component:'Layout',meta: { title: '文章', icon: 'example' }},
+//   {id:2,parentId:1,name:'ArtWrite',path:'ArtWrite',component:'ArtWrite',meta: { title: '写文章', icon: 'table'}},
+//   {id:3,parentId:1,name:'ArtManage',path:'ArtManage',component:'ArtManage',meta: { title: '文章管理', icon: 'tree'}}
+// ]};
+
+// var formatdata=[];
+// for(var i in jsons.data){     // parentId为0时表示为根节点
+//   if(jsons.data[i].parentId=='0'){   
+//     var tempObject={
+//       id:jsons.data[i].id,
+//       name:jsons.data[i].name,
+//       path:'/'+jsons.data[i].path,
+//       component:jsons.data[i].component==='Layout'?Layout:checkRouter(jsons.data[i].component),
+//       meta: jsons.data[i].meta,
+//       redirect: jsons.data[i].redirect,
+//       alwaysShow:true
+//     };
+//     // tempObject.label=jsons.data[i].title;
+//     // tempObject.id=jsons.data[i].id;
+//     // if(jsons.data[i].component==='Layout'){
+//     //   tempObject.component = Layout;
+//     // }else{
+//     //   tempObject.component = () => import(jsons.data[i].component+'')
+//     // }
+
+//     tempObject.children=getChildren(0,tempObject.id,jsons.data);
+//     formatdata.push(tempObject);
+//   }
+// }
+
+// function getChildren(checkItemId,id,data){    //递归体  即对每条data逐条递归找children
+// 	    var tempArray=[];
+// 	    for(var i in data){
+// 	        if(data[i].parentId==id){
+//             var tempChild={
+//               id:data[i].id,
+//               name:data[i].name,
+//               path:data[i].path,
+//               component:data[i].component==='Layout'?Layout:checkRouter(data[i].component),
+//               meta:data[i].meta,redirect:data[i].redirect
+//             };
+
+//             // if(jsons.data[i].component==='Layout'){
+//             //   tempChild.component = Layout;
+//             // }else{
+//             //   tempChild.component = () => import(jsons.data[i].component+'')
+//             // }
+
+// 				if(tempChild.id == checkItemId){
+// 					 tempChild.checked = true
+// 				}
+// 	            if(selectChildren(data[i].id,data)){   //若存在子节点，继续递归；否则为叶节点，停止递归
+// 	                tempChild.children=getChildren(checkItemId,data[i].id,data);
+// 	            }
+// 	            tempArray.push(tempChild);
+// 	        }
+// 	    }
+// 	    return tempArray;
+// 	}
+// 	function selectChildren(id,data){   // 是否存在子节点
+// 	    for(var i in data){
+// 	        if(data[i].parentId==id){
+// 	            return true;
+// 	        }
+// 	    }
+// 	    return false;
+//   }
+// console.log(formatdata)
+// 
+
+let baseRoutes = [
   {
     path: '/system',
     component: Layout,
+    redirect: '/system/menu',
+    name: 'System',
+    meta: { title: '系统设置', icon: 'example', roles: ['admin'] },
     children: [
       {
-        path: 'system',
-        name: 'system',
+        path: 'menu',
+        name: 'menu',
         component: () => import('@/views/webset/index'),
-        meta: { title: '系统设置', icon: 'form', roles: ['admin'] }
+        meta: { title: '菜单管理', icon: 'form'}
+      },
+      {
+        path: 'menu1',
+        name: 'menu1',
+        component: () => import('@/views/webset/index'),
+        meta: { title: '权限管理', icon: 'form'}
       }
     ]
   },
-  // 404 page must be placed at the end !!!
+  //   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
+
+// let formatdata=[];
+// sysMenu().then(res=>{
+//   formatdata = authRoute(res.data);
+//   console.log(formatdata)
+// })
+
+export const asyncRoutes = baseRoutes;
+// export const asyncRoutes = [ // 私有模块
+//   {
+//     path: '/art',
+//     component: Layout,
+//     redirect: '/art/write',
+//     name: 'Art',
+//     meta: { title: '文章', icon: 'example' },
+//     children: [
+//       {
+//         path: 'write',
+//         name: 'ArtWrite',
+//         component: ArtWrite,
+//         meta: { title: '写文章', icon: 'table' }
+//       },
+//       {
+//         path: 'manage',
+//         name: 'ArtManage',
+//         component: () => import('@/views/art/artManage/index'),
+//         meta: { title: '文章管理', icon: 'tree' }
+//       }
+//     ]
+//   },
+//   {
+//     path: '/categories',
+//     component: Layout,
+//     redirect: '/categories/classify',
+//     name: 'Categories',
+//     meta: { title: '分类/标签', icon: 'example' },
+//     children: [
+//       {
+//         path: 'classify',
+//         name: 'Classify',
+//         component: () => import('@/views/categories/classify/index'),
+//         meta: { title: '分类', icon: 'table' }
+//       },
+//       {
+//         path: 'tag',
+//         name: 'Tag',
+//         component: () => import('@/views/categories/tag/index'),
+//         meta: { title: '标签', icon: 'tree' }
+//       }
+//     ]
+//   },
+//   {
+//     path: '/webset',
+//     component: Layout,
+//     children: [
+//       {
+//         path: 'webset',
+//         name: 'Webset',
+//         component: () => import('@/views/webset/index'),
+//         meta: { title: '网站设置', icon: 'form' }
+//       }
+//     ]
+//   },
+//   {
+//     path: '/system',
+//     component: Layout,
+//     redirect: '/system/menu',
+//     name: 'System',
+//     meta: { title: '系统设置', icon: 'example', roles: ['admin'] },
+//     children: [
+//       {
+//         path: 'menu',
+//         name: 'menu',
+//         component: () => import('@/views/webset/index'),
+//         meta: { title: '菜单管理', icon: 'form'}
+//       },
+//       {
+//         path: 'menu1',
+//         name: 'menu1',
+//         component: () => import('@/views/webset/index'),
+//         meta: { title: '权限管理', icon: 'form'}
+//       }
+//     ]
+//   },
+//   // 404 page must be placed at the end !!!
+//   { path: '*', redirect: '/404', hidden: true }
+// ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

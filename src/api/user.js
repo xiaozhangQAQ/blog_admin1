@@ -23,5 +23,10 @@ import request from '@/utils/request'
 //   })
 // }
 
-export const login = (data) => request.post(`http://127.0.0.1:7002/api/login`, data)
+export const login = (data) => request.post(`/login`, data)
+export const sysMenu = (data) => request.post(`/sys/menu`, data)
+export const addMenu = (data) => request.post(`/sys/addMenu`, data)
+export const updateMenu = (data) => request.post(`/sys/updateMenu`, data)
+export const remoteMenu = (data) => request.post(`/sys/remoteMenu`, data)
+
 
