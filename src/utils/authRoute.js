@@ -1,17 +1,18 @@
 import Layout from '@/layout'
 
-const indexRouter = {
-    ArtWrite:()=> import('@/views/art/artWrite/index'),
-    ArtManage:()=> import('@/views/art/artManage/index'),
-    Classify:() => import('@/views/categories/classify/index'),
-    Tag:() => import('@/views/categories/tag/index')
-}
+import indexRouter from '@/router/menuIndex'
+// const indexRouter = [
+//     {path:()=> import('@/views/art/artWrite/index'),name:'ArtWrite'},
+//     {path:()=> import('@/views/art/artManage/index'),name:'ArtManage'},
+//     {path:() => import('@/views/categories/classify/index'),name:'Classify'},
+//     {path:() => import('@/views/categories/tag/index'),name:'Tag'}
+// ]
 
 function checkRouter(vals){
     let val=null;
     for(let key in indexRouter){
-        if(key == vals){
-        val = indexRouter[key];
+        if(indexRouter[key].name == vals){  
+         val = indexRouter[key].path;
         }
     }
 

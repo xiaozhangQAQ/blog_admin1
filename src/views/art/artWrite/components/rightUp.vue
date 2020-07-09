@@ -5,7 +5,7 @@
         ref="upload"
         class="upload-demo"
         drag
-        action="https://upload-z2.qiniup.com"
+        action=""
         :data="token"
         :show-file-list="false"
         :auto-upload="false"
@@ -69,7 +69,7 @@
 <script>
 
 import imgCropper from '@/components/ImageCropper/index1.vue'
-import { qntoken } from '@/api/qnToken.js'
+import { upload } from '@/api/files.js'
 import { articleCate, articleLabel } from '@/api/article'
 
 export default {
@@ -136,12 +136,14 @@ export default {
     getInitData(datas) {
       // this.initData = datas;
       // console.log(datas)
-      this.form.name = datas.article.title
-      this.form.region = datas.category._id
-      this.form.desc = datas.article.detail
+      this.form.name = datas.article.title;
+      this.form.region = datas.category._id;
+      this.form.desc = datas.article.detail;
       this.form.label = datas.tags.map((item, index) => {
         return item._id
-      })
+      });
+      console.log(datas.article.titleImage);
+      this.defaultImg = datas.article.titleImage;
     },
     // labelChange(e){
     //    console.log(e)
@@ -170,12 +172,23 @@ export default {
       }
     },
     finishCropImage(newFile) {
-      this.newFile = newFile
+      this.newFile = newFile;
+      console.log(newFile);
+      let formdata = new FormData();
+      formdata.append("titleImg",newFile,'titleImg.png')
       // this.$refs.upload.submit();
-      qntoken().then(data => {
-        this.token = data.data
-        this.$refs.upload.submit()
+      upload(formdata).then(res=>{
+        this.$message({
+          message: '上传成功',
+          type: 'success'
+        });
+        this.defaultImg = res.data.imgurl;
+        this.$refs.cropperBox.close();
       })
+      // qntoken().then(data => {
+      //   this.token = data.data
+      //   this.$refs.upload.submit()
+      // })
     },
     handleAvatarSuccess(response, file) {
       // this.$emit('uploadSuccess', response.imgUrl

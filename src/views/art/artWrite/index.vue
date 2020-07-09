@@ -21,7 +21,7 @@
 // import { mapGetters } from 'vuex'
 import articleEdit from '@/components/MarkDowm/index'
 import rightUp from './components/rightUp'
-import { addArticle, articles, updateArticle } from '@/api/article'
+import { addArticle, selectArtById, updateArticle } from '@/api/article'
 import {
   mapState
 } from 'vuex'
@@ -45,19 +45,21 @@ export default {
   },
   mounted() {
     if (JSON.stringify(this.$route.query) !== '{}') {
-      articles(this.$route.query).then(res => {
-        this.$refs.rightUpData.getInitData(res.data.list[0])
-        this.$refs.editContent.getInitData(res.data.list[0].article.contentCode)
+      selectArtById(this.$route.query).then(res => {
+        console.log(res)
+        this.$refs.rightUpData.getInitData(res.data)
+        this.$refs.editContent.getInitData(res.data.article.contentCode)
       })
     }
   },
   methods: {
     upto() {
-      this.loading = true
-      const basedata = this.$refs.rightUpData.form
-      const htmlcontent = this.$refs.editContent
-      let datas = {}
-      console.log(basedata)
+      this.loading = true;
+      const basedata = this.$refs.rightUpData.form;
+      const titleImage = this.$refs.rightUpData.defaultImg;
+      const htmlcontent = this.$refs.editContent;
+      let datas = {};
+      console.log(basedata);
 
       datas = {
         uid: '5ebca743ba6c2d2f2cb5e627',
@@ -65,10 +67,13 @@ export default {
         detail: basedata.desc,
         tid: basedata.region,
         lid: basedata.label,
+        titleImage: titleImage,
         content: htmlcontent.html,
         contentCode: htmlcontent.content
       }
 
+      // console.log(datas);
+      // return; 
       if (JSON.stringify(this.$route.query) !== '{}') {
         datas.titleId = this.$route.query._id
         updateArticle(datas).then(res => {

@@ -32,9 +32,9 @@
         trash: true, // 清空
         save: false, // 保存（触发events中的save事件）
         navigation: false, // 导航目录
-        alignleft: false, // 左对齐
-        aligncenter: false, // 居中
-        alignright: false, // 右对齐
+        alignleft: true, // 左对齐
+        aligncenter: true, // 居中
+        alignright: true, // 右对齐
         subfield: true, // 单双栏模式
         preview: true, // 预览
       }"
@@ -48,6 +48,8 @@
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import { qntoken, uploadToQiniu } from '@/api/qnToken.js'
+import { upload } from '@/api/files.js'
+
 
 export default {
   name: 'Editor',
@@ -69,23 +71,30 @@ export default {
       this.html = render
     },
     $imgAdd(pos, $file) {
-      qntoken()
-        .then((data) => {
-          const formParams = new FormData()
-          formParams.append('token', data.data.token)
-          formParams.append('file', $file)
-          this.startUploadImg(formParams, pos)
-        })
-        .catch((err) => {
-          // this.$toast(err.msg, 'error')
-          this.$message.error(err.msg)
-        })
+      // qntoken()
+      // .then((data) => {
+      //   const formParams = new FormData()
+      //   formParams.append('token', data.data.token)
+      //   formParams.append('file', $file)
+      //   this.startUploadImg(formParams, pos)
+      // })
+      // .catch((err) => {
+      //   // this.$toast(err.msg, 'error')
+      //   this.$message.error(err.msg)
+      // })
+      let formdata = new FormData();
+      formdata.append("artContetImg",$file)
+      // this.$refs.upload.submit();
+      upload(formdata).then(res=>{
+        console.log(pos,res.data.imgurl)
+        this.$refs.md.$img2Url(pos,res.data.imgurl)
+      })  
     },
     startUploadImg(formParams, pos) {
       uploadToQiniu(formParams)
-        .then((qiniuData) => {
-          this.$refs.md.$img2Url(pos, qiniuData.imgUrl)
-        })
+      .then((qiniuData) => {
+        $vm.$img2Url(pos, qiniuData.imgUrl)
+      })
       // .catch((err) => {
       //    this.$message.error('上传失败');
       // })

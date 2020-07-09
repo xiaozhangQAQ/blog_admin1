@@ -47,6 +47,7 @@ export const addArticle = (data) => request.post(`/addArticle`, data)
 export const deleteArticle = (data) => request.post(`/deleteArticle`, data)
 export const updateArticle = (data) => request.post(`/updateArticle`, data)
 export const changeStatus = (data) => request.post(`/articleChangeStatus`, data)
+export const selectArtById = (data) => request.post(`/selectArtById`, data)
 
 export const articleCate = (data) => request.post(`/articleCate`, data)
 export const articleCateAdd = (data) => request.post(`/articleCateAdd`, data)

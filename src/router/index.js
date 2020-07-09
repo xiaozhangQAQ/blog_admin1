@@ -189,7 +189,7 @@ let baseRoutes = [
   {
     path: '/system',
     component: Layout,
-    redirect: '/system/menu',
+    // redirect: '/system/menu',
     name: 'System',
     meta: { title: '系统设置', icon: 'example', roles: ['admin'] },
     children: [

@@ -80,7 +80,7 @@
           <el-button type="primary" size="mini" icon="el-icon-view" class="act_form" @click="readArticle(scope.row.article._id)">
             预览
           </el-button>
-          <router-link :to="'/art/write?_id='+scope.row.article._id">
+          <router-link :to="'/Art/ArtWrite?_id='+scope.row.article._id">
             <el-button type="primary" size="mini" class="act_form" icon="el-icon-edit">
               编辑
             </el-button>

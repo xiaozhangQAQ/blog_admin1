@@ -67,8 +67,19 @@
         <el-form-item label="菜单名称" class="confirm_item">
           <el-input v-model="form.tname" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="路经名称" class="confirm_item">
-          <el-input v-model="form.lname" autocomplete="off"></el-input>
+        <el-form-item label="可选菜单路径" class="confirm_item">
+          <!-- <el-input v-model="form.lname" autocomplete="off"></el-input> -->
+              <el-select v-model="form.lname" filterable placeholder="请选择" style="width:100%;">
+                <el-option
+                filterable
+                v-for="item in indexRouters"
+                :key="item.name"
+                :label="item.name"
+                :value="item.name">
+                <span>{{ item.name }}</span>
+                </el-option>
+            </el-select>
+           
         </el-form-item>
         <el-form-item label="排序" class="confirm_item">
           <el-input type="number" min="0" v-model="form.sort" autocomplete="off"></el-input>
@@ -79,6 +90,7 @@
       </el-form>
       <div class="confirm_checkicon">
         <h4>图标</h4>
+        
         <el-select v-model="iconvalue" filterable placeholder="请选择">
           <el-option
             filterable
@@ -91,6 +103,8 @@
            
           </el-option>
         </el-select>
+
+        <svg-icon :icon-class="iconvalue" style="margin-left:20px;width:1.5em;height:1.5em;"></svg-icon>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -106,6 +120,7 @@ import { mapGetters } from 'vuex'
 import {sysMenu,addMenu,updateMenu,remoteMenu} from '@/api/user'
 import {authRoute} from '@/utils/authRoute'
 import svgIcons from './svg-icons'
+import indexRouter from '@/router/menuIndex'
 
 export default {
   name: 'Webset',
@@ -138,23 +153,9 @@ export default {
         actNode:{}, //点击的节点
         actType:1, //1为根目录  2为子目录菜单
         nodeCreateType:1, //1为 新建   2为更新
-        iconoptions: [{
-          value: 'share',
-          label: 'share'
-        }, {
-          value: 'share',
-          label: 'share'
-        }, {
-          value: 'share',
-          label: 'share'
-        }, {
-          value: 'share',
-          label: 'share'
-        }, {
-          value: 'share',
-          label: 'share'
-        }],
-        iconvalue: 'example'//选择图标值 
+        iconoptions: [],
+        iconvalue: 'example',//选择图标值 
+        indexRouters:indexRouter || []
       };
   },
   mounted(){
@@ -188,6 +189,7 @@ export default {
       this.actNode = data;
       this.actType = 2;
       this.nodeCreateType = 1;
+      this.iconvalue = 'example';
       this.sort = data.sort;
       this.dialogFormVisible = true; 
       
@@ -209,6 +211,7 @@ export default {
       this.form.lname = data.name;
       this.actNode = data;
       this.form.sort = data.sort;
+      this.iconvalue = data.meta.icon;
       this.nodeCreateType = 2;
       this.dialogFormVisible = true; 
     },
@@ -245,8 +248,9 @@ export default {
           lname:'',
           sort:0
       }
-       this.actType = 1;
-       this.dialogFormVisible = true; 
+      this.iconvalue = 'example';
+      this.actType = 1;
+      this.dialogFormVisible = true; 
     },
     addSysMenu(){
       //  {parentId:0,name:'Art',path:'art',component:'Layout',meta: { title: '文章', icon: 'example' }}
